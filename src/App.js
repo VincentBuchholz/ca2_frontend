@@ -1,70 +1,86 @@
-import React, { useState,useEffect } from "react"
+import React, {useState, useEffect} from "react"
 import facade from "./apiFacade";
-import {Button} from "react-bootstrap";
+import {Button, Container, Form} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Link, Outlet} from "react-router-dom";
+import Header from "./components/Header";
 
-function LogIn({ login }) {
-  const init = { username: "", password: "" };
-  const [loginCredentials, setLoginCredentials] = useState(init);
+function LogIn({login}) {
+    const init = {username: "", password: ""};
+    const [loginCredentials, setLoginCredentials] = useState(init);
 
-  const performLogin = (evt) => {
-    evt.preventDefault();
-    login(loginCredentials.username, loginCredentials.password);
-  }
-  const onChange = (evt) => {
-    setLoginCredentials({ ...loginCredentials,[evt.target.id]: evt.target.value })
-  }
+    const performLogin = (evt) => {
+        evt.preventDefault();
+        login(loginCredentials.username, loginCredentials.password);
+    }
+    const onChange = (evt) => {
+        setLoginCredentials({...loginCredentials, [evt.target.id]: evt.target.value})
+    }
 
-  return (
-      <div>
-        <h2>Login</h2>
-        <form onChange={onChange} >
-          <input placeholder="User Name" id="username" />
-          <input placeholder="Password" id="password" />
-          <button onClick={performLogin}>Login</button>
-        </form>
-      </div>
-  )
+    return (
+        <Container>
+            <Form onChange={onChange} className={"mt-5 w-25 m-auto"}>
+                <h2>Login</h2>
+                <Form.Group className="mb-3" controlId="username">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control type="text" placeholder="Username"/>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="password">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password"/>
+                </Form.Group>
+                <Button variant="primary" type="submit" onClick={performLogin}>
+                    Login
+                </Button>
+            </Form>
+        </Container>
+
+
+    )
 
 }
+
 function LoggedIn() {
-  const [dataFromServer, setDataFromServer] = useState("Loading...")
+    const [dataFromServer, setDataFromServer] = useState("Loading...")
 
-  useEffect(() => {
-      facade.fetchData().then(data=> setDataFromServer(data.msg));
-  }, [])
+    useEffect(() => {
+        facade.fetchData().then(data => setDataFromServer(data.msg));
+    }, [])
 
-  return (
-      <div>
-        <h2>Data Received from server</h2>
-        <h3>{dataFromServer}</h3>
-      </div>
-  )
+    return (
+        <div>
+            <h2>Data Received from server</h2>
+            <h3>{dataFromServer}</h3>
+        </div>
+    )
 
 }
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(false)
 
-  const logout = () => {
-      facade.logout()
-      setLoggedIn(false)
-  }
-  const login = (user, pass) => {
-      facade.login(user,pass)
-      .then(res =>setLoggedIn(true));
-  }
+    const logout = () => {
+        facade.logout()
+        setLoggedIn(false)
+    }
+    const login = (user, pass) => {
+        facade.login(user, pass)
+            .then(res => setLoggedIn(true));
+    }
 
-  return (
-      <div>
-        {!loggedIn ? (<LogIn login={login} />) :
-            (<div>
-              <LoggedIn />
-              <button onClick={logout}>Logout</button>
-            </div>)}
+    return (
+        <div>
+            {!loggedIn ? (<LogIn login={login}/>) :
+                (<div>
+                    <Header/>
+                    <LoggedIn/>
+                    <button onClick={logout}>Logout</button>
+                </div>)}
 
-      </div>
-  )
+        </div>
+    )
 
 }
+
 export default App;
