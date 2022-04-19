@@ -1,21 +1,21 @@
 import React from 'react';
 import {Link, Outlet} from "react-router-dom";
-import {Container, Nav, Navbar} from "react-bootstrap";
+import {Button, Container, Nav, Navbar} from "react-bootstrap";
 
-const Header = () => {
+const Header = ({logout}) => {
     return (
         <div>
             <Navbar bg="light" expand="lg">
-                <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/jokes">jokes</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
+                <nav
+                    style={{
+                        borderBottom: "solid 1px",
+                        paddingBottom: "1rem",
+                    }}
+                >
+                    <Link exact to="/">Home</Link> |{" "}
+                    <Link to="/jokes">Jokes</Link>
+                    <Button className="float-end" onClick={logout}>Log out</Button>
+                </nav>
             </Navbar>
             <Outlet/>
         </div>

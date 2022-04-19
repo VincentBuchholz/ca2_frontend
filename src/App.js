@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react"
 import facade from "./apiFacade";
-import {Button, Container, Form} from "react-bootstrap";
+import {Button, Container, Form, Nav, Navbar} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link, Outlet} from "react-router-dom";
 import Header from "./components/Header";
+import Home from "./components/Home";
 
 function LogIn({login}) {
     const init = {username: "", password: ""};
@@ -41,21 +42,7 @@ function LogIn({login}) {
 
 }
 
-function LoggedIn() {
-    const [dataFromServer, setDataFromServer] = useState("Loading...")
 
-    useEffect(() => {
-        facade.fetchData().then(data => setDataFromServer(data.msg));
-    }, [])
-
-    return (
-        <div>
-            <h2>Data Received from server</h2>
-            <h3>{dataFromServer}</h3>
-        </div>
-    )
-
-}
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false)
@@ -71,13 +58,10 @@ function App() {
 
     return (
         <div>
-            {!loggedIn ? (<LogIn login={login}/>) :
+            {!loggedIn ? (<LogIn login={login} />) :
                 (<div>
-                    <Header/>
-                    <LoggedIn/>
-                    <button onClick={logout}>Logout</button>
+                    <Header logout={logout}/>
                 </div>)}
-
         </div>
     )
 
