@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import facade from "../apiFacade";
+import {Container} from "react-bootstrap";
 
 const Home = () => {
 
@@ -21,9 +22,9 @@ const Home = () => {
     }
 
     return (
-        <div>
+        <Container>
             <LoggedIn />
-        </div>
+        </Container>
     );
 };
 

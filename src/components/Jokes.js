@@ -19,7 +19,7 @@ const Jokes = () => {
 
     return(
 
-        <Container className={"mt-5"}>
+        <Container>
                 <Button variant="primary" type="submit" onClick={getJoke}>
                     Get joke
                 </Button>
