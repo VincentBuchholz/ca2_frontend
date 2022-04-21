@@ -1,11 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
-const Home = (loggedIn,logout) => {
+import facade from "../apiFacade";
+import {Container} from "react-bootstrap";
+
+const Home = () => {
+
+    function LoggedIn() {
+        const [dataFromServer, setDataFromServer] = useState("Loading...")
+
+        useEffect(() => {
+            facade.fetchData().then(data => setDataFromServer(data.msg));
+        }, [])
+
+        return (
+            <div>
+                <h2>Data Received from server</h2>
+                <h3>{dataFromServer}</h3>
+            </div>
+        )
+
+    }
+
     return (
-        <div>
-            <>{loggedIn}</>
-            <button onClick={logout}>Logout</button>
-        </div>
+        <Container>
+            <LoggedIn />
+        </Container>
     );
 };
 
