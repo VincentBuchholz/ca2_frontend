@@ -1,3 +1,6 @@
+import {Link} from "react-router-dom";
+
+
 const URL = "http://localhost:8080/ca2_war_exploded";
 
 function handleHttpErrors(res) {
@@ -8,6 +11,7 @@ function handleHttpErrors(res) {
     return res.json();
 }
 
+
 function apiFacade() {
     /* Insert utility-methods from a later step (d) here (REMEMBER to uncomment in the returned object when you do)*/
 
@@ -15,7 +19,20 @@ function apiFacade() {
         const options = makeOptions("POST", true,{username: user, password: password });
         return fetch(URL + "/api/login", options)
             .then(handleHttpErrors)
-            .then(res => {setToken(res.token) })
+            .then(res => {
+                setToken(res.token)
+                setUserType(res.userType)
+                setUserID(res.userID)
+
+            })
+    }
+
+    const setUserType = (userType) => {
+        localStorage.setItem("userType",userType)
+    }
+
+    const setUserID = (userID) => {
+        localStorage.setItem("userID",userID)
     }
 
 
@@ -45,12 +62,24 @@ function apiFacade() {
     const getToken = () => {
         return localStorage.getItem('jwtToken')
     }
+    const getUserType = () => {
+        return localStorage.getItem('userType')
+    }
+
+    const getUserID = () => {
+        return localStorage.getItem('userID')
+    }
+
     const loggedIn = () => {
         const loggedIn = getToken() != null;
         return loggedIn;
     }
+
     const logout = () => {
         localStorage.removeItem("jwtToken");
+        localStorage.removeItem("userType");
+        localStorage.removeItem("userID");
+
     }
 
     return {
@@ -60,7 +89,12 @@ function apiFacade() {
         loggedIn,
         login,
         logout,
-        fetchData
+        fetchData,
+        setUserType,
+        setUserID,
+        getUserType,
+        getUserID
+
     }
 }
 const facade = apiFacade();
